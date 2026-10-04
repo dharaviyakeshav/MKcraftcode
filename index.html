@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="google05df855b54e7c850" />
+    
+    <!-- Primary Meta Tags -->
+    <title>MKCRAFT & CODE | Best Web Development & IT Solutions</title>
+    <meta name="title" content="MKCRAFT & CODE | Best Web Development & IT Solutions">
+    <meta name="description" content="MKCRAFT & CODE offers professional web development, custom software, UI/UX design, and digital solutions to grow your business online. Contact us today!">
+    <meta name="keywords" content="MKCRAFT, Web Development, Web Design, Custom Software, Coding Solutions, IT Services">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="MKCRAFT & CODE">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mkcraftcode.infy.click/">
+    <meta property="og:title" content="MKCRAFT & CODE | Web Solutions">
+    <meta property="og:description" content="Professional web development and digital solutions tailored for your business.">
+    <meta property="og:image" content="https://www.yourdomain.com/assets/og-image.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mkcraftcode.infy.click/">
+    <meta property="twitter:title" content="MKCRAFT & CODE | Web Solutions">
+    <meta property="twitter:description" content="Professional web development and digital solutions tailored for your business.">
+    <meta property="twitter:image" content="https://www.yourdomain.com/assets/og-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgMain: '#0a0d12',
+                        bgCard: '#12161f',
+                        bgBorder: '#1e2430',
+                        accent: '#10b981',
+                        textMain: '#f3f4f6',
+                        textMuted: '#9ca3af'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #0a0d12;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* =========================
+           CODE WINDOW
+        ========================= */
+        .code-window {
+            width: 100%;
+            background: #12161f;
+            border: 1px solid #1e2430;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 15px;
+            background: #0f131a;
+            border-bottom: 1px solid #1e2430;
+        }
+
+        .code-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .filename {
+            margin-left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .code-body {
+            padding: 22px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: #f3f4f6;
+        }
+
+        .code-body .ln {
+            display: inline-block;
+            width: 28px;
+            color: #6b7280;
+            user-select: none;
+        }
+
+        .tok-kw { color: #d9a5e0; }
+        .tok-var { color: #7fc8e8; }
+        .tok-str { color: #10b981; }
+        .tok-prop { color: #9aa0aa; }
+        .tok-punc { color: #6b7280; }
+
+        .caret {
+            display: inline-block;
+            width: 7px;
+            height: 16px;
+            margin-left: 3px;
+            background: #10b981;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0d12;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e2430;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+
+        /* =========================
+           SPOTLIGHT
+        ========================= */
+        #spotlight {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            background: radial-gradient(
+                600px circle at var(--x, 50%) var(--y, 50%),
+                rgba(16, 185, 129, 0.08),
+                transparent 80%
+            );
+        }
+
+        /* =========================
+           3D REVEAL
+        ========================= */
+        .reveal-3d {
+            opacity: 0;
+            transform: perspective(1200px) rotateX(20deg) rotateY(-5deg) translateZ(-150px) translateY(80px) scale(0.9);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+            transform-style: preserve-3d;
+        }
+
+        .reveal-3d.active {
+            opacity: 1;
+            transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0) scale(1);
+        }
+
+        /* =========================
+           PROJECT CARDS
+        ========================= */
+        .project-card {
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.15);
+            transform: translateY(-6px) scale(1.02) !important;
+        }
+
+        /* =========================
+           MAGNETIC BUTTON
+        ========================= */
+        .btn-magnetic {
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 640px) {
+            .code-body {
+                font-size: 12px;
+                padding: 18px 14px;
+            }
+            .code-titlebar {
+                padding: 11px 14px;
+            }
+            .code-titlebar .filename {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bgMain text-textMain font-sans antialiased relative">
+
+    <!-- Spotlight -->
+    <div id="spotlight"></div>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-bgMain/90 backdrop-blur-md border-b border-bgBorder">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="group inline-flex items-center gap-2 font-mono font-bold text-base text-textMain hover:text-accent transition-all tracking-tight bg-bgCard/60 border border-bgBorder px-3.5 py-1.5 rounded-xl">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                </span>
+                <span class="text-accent">&lt;</span>
+                <span>MKCRAFT <span class="text-accent">&amp;</span> CODE</span>
+                <span class="text-accent">/&gt;</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-textMuted">
+                <a href="#about" class="hover:text-textMain transition-colors">About</a>
+                <a href="#skills" class="hover:text-textMain transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-textMain transition-colors">Projects</a>
+                <a href="#roadmap" class="hover:text-textMain transition-colors">Process</a>
+                <a href="#contact" class="hover:text-textMain transition-colors">Contact</a>
+            </nav>
+
+            <!-- Mobile Button -->
+            <button id="menu-btn" class="md:hidden text-textMuted hover:text-textMain focus:outline-none" aria-label="Toggle Menu">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-bgCard border-b border-bgBorder px-6 py-4 space-y-3 font-medium text-sm text-textMuted">
+            <a href="#about" class="block hover:text-textMain">About</a>
+            <a href="#skills" class="block hover:text-textMain">Skills</a>
+            <a href="#projects" class="block hover:text-textMain">Projects</a>
+            <a href="#roadmap" class="block hover:text-textMain">Process</a>
+            <a href="#contact" class="block hover:text-textMain">Contact</a>
+        </div>
+    </header>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-24">
+
+        <!-- =========================
+             HERO
+        ========================= -->
+        <section class="hero-section grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-16 items-center reveal-3d">
+            <!-- Left Side -->
+            <div class="flex flex-col justify-center items-start">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent font-mono text-xs mb-6">
+                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    Ready to Scale Your Business Online?
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-textMain mb-5 leading-[1.15]">
+                    Turn Your Business into a
+                    <span class="text-accent underline decoration-accent/30 underline-offset-8">
+                        24/7 Digital Growth Machine.
+                    </span>
+                </h1>
+
+                <p class="text-lg sm:text-xl text-textMuted font-normal mb-8 leading-relaxed">
+                    We craft custom, high-converting websites that simplify your work, automate client growth, and outshine your competitors.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <a href="#contact" class="btn-magnetic px-7 py-3.5 rounded-md bg-accent text-bgMain font-bold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 flex items-center gap-2">
+                        <span>Get Your Free Proposal</span>
+                        <span>→</span>
+                    </a>
+                    <a href="#projects" class="btn-magnetic px-6 py-3.5 rounded-md border border-bgBorder font-medium text-sm text-textMain hover:border-accent hover:text-accent transition-colors">
+                        See Recent Projects
+                    </a>
+                </div>
+
+                <p class="font-mono text-[11px] text-textMuted/80 flex flex-wrap items-center gap-2">
+                    <span class="text-accent">✓</span> Fast Turnaround
+                    <span>|</span>
+                    <span class="text-accent">✓</span> 100% Mobile Responsive
+                    <span>|</span>
+                    <span class="text-accent">✓</span> SEO Ready
+                </p>
+            </div>
+
+            <!-- Right Side - Code Window -->
+            <div class="w-full">
+                <div class="code-window">
+                    <div class="code-titlebar">
+                        <span class="code-dot" style="background:#e5645c;"></span>
+                        <span class="code-dot" style="background:#e3b34c;"></span>
+                        <span class="code-dot" style="background:#6bcf8f;"></span>
+                        <span class="filename">about-me.js</span>
+                    </div>
+                    <div class="code-body">
+                        <div><span class="ln">1</span><span class="tok-kw">const</span> <span class="tok-var">developer</span> <span class="tok-punc">=</span> <span class="tok-punc">{</span></div>
+                        <div><span class="ln">2</span>&nbsp;&nbsp;<span class="tok-prop">name:</span> <span class="tok-str">'MKCRAFT & CODE'</span><span class="tok-punc">,</span></div>
+                        <div><span class="ln">3</span>&nbsp;&nbsp;<span class="tok-prop">role:</span> <span class="tok-str">'Web Developer'</span><span class="tok-punc">,</span></div>
+                        <div><span class="ln">4</span>&nbsp;&nbsp;<span class="tok-prop">stack:</span> <span class="tok-punc">[</span><span class="tok-str">'PHP'</span><span class="tok-punc">,</span> <span class="tok-str">'Javascript'</span><span class="tok-punc">,</span> <span class="tok-str">'Python'</span><span class="tok-punc">],</span></div>
+                        <div><span class="ln">5</span>&nbsp;&nbsp;<span class="tok-prop">focus:</span> <span class="tok-str">'accessible, no-nonsense UI'</span><span class="tok-punc">,</span></div>
+                        <div><span class="ln">6</span>&nbsp;&nbsp;<span class="tok-prop">status:</span> <span class="tok-str">'open to work'</span><span class="caret"></span></div>
+                        <div><span class="ln">7</span><span class="tok-punc">};</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             ABOUT
+        ========================= -->
+        <section id="about" class="scroll-mt-24 py-20 reveal-3d">
+            <p class="font-mono text-xs text-accent uppercase tracking-wider mb-2">01. Our Vision & Mission</p>
+            <h3 class="text-2xl sm:text-3xl font-bold text-textMain mb-6">Building Digital Solutions That Drive Business Growth</h3>
+
+            <div class="grid md:grid-cols-3 gap-8 items-start">
+                <div class="md:col-span-2 space-y-4 text-textMuted leading-relaxed">
+                    <p class="text-base text-textMain/90 font-medium">
+                        Our vision is simple: to make digital expansion smooth, fast, and highly profitable for modern businesses.
+                    </p>
+                    <p>
+                        We believe your website shouldn't just exist—it should actively work for you. We help business owners digitize their services, simplify client communication, and establish an irresistible online presence through tailored web engineering.
+                    </p>
+                    <p>
+                        By merging high-speed performance, sleek design, and conversion-focused structures, we turn everyday visitors into loyal clients, giving your brand a distinct edge in today's competitive market.
+                    </p>
+
+                    <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+                        <div class="p-3.5 bg-bgCard rounded-lg border border-bgBorder">
+                            <span class="text-accent font-bold block mb-1">🎯 VISION: EFFORTLESS GROWTH</span>
+                            Streamlined web services that handle client management and lead generation effortlessly.
+                        </div>
+                        <div class="p-3.5 bg-bgCard rounded-lg border border-bgBorder">
+                            <span class="text-accent font-bold block mb-1">⚡ MISSION: SPEED & QUALITY</span>
+                            Delivering modern, mobile-first designs with rock-solid security and speed.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Card -->
+                <div class="bg-bgCard p-5 rounded-xl border border-accent/40 font-mono text-xs text-textMuted space-y-4 shadow-xl">
+                    <div class="text-textMain font-bold border-b border-bgBorder pb-2 text-sm flex items-center justify-between">
+                        <span>Start Your Project</span>
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    </div>
+                    <p class="text-[11px] text-textMuted leading-normal">
+                        Ready to take your business online or rebuild your existing site for better results?
+                    </p>
+                    <ul class="space-y-2 text-[11px]">
+                        <li class="flex items-center gap-2 text-textMain">
+                            <span class="text-accent">✓</span> Free Tech & UI Audit
+                        </li>
+                        <li class="flex items-center gap-2 text-textMain">
+                            <span class="text-accent">✓</span> Custom Business Features
+                        </li>
+                        <li class="flex items-center gap-2 text-textMain">
+                            <span class="text-accent">✓</span> Fast Delivery & Support
+                        </li>
+                    </ul>
+                    <a href="#contact" class="block text-center py-2.5 px-4 rounded bg-accent text-bgMain font-bold text-xs hover:bg-accent/90 transition-all">
+                        Book Free Consultation
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             SKILLS
+        ========================= -->
+        <section id="skills" class="scroll-mt-24 py-20 reveal-3d">
+            <p class="font-mono text-xs text-accent uppercase tracking-wider mb-2">02. Toolkit & Tech</p>
+            <h3 class="text-2xl font-bold text-textMain mb-8">Technologies We Master</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-bgCard border border-bgBorder p-6 rounded-lg hover:border-accent/50 transition-colors">
+                    <h4 class="font-mono text-sm text-textMain font-semibold mb-4">
+                        <span class="text-accent">&gt;</span> Frontend Development
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-textMuted font-mono">
+                        <li>● HTML5</li>
+                        <li>● CSS3</li>
+                        <li>● Tailwind CSS</li>
+                        <li>● JavaScript (ES6+)</li>
+                        <li>● Bootstrap</li>
+                    </ul>
+                </div>
+
+                <div class="bg-bgCard border border-bgBorder p-6 rounded-lg hover:border-accent/50 transition-colors">
+                    <h4 class="font-mono text-sm text-textMain font-semibold mb-4">
+                        <span class="text-accent">&gt;</span> Backend & Database
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-textMuted font-mono">
+                        <li>● PHP</li>
+                        <li>● Python (Flask)</li>
+                        <li>● MySQL Database</li>
+                        <li>● RESTful APIs</li>
+                    </ul>
+                </div>
+
+                <div class="bg-bgCard border border-bgBorder p-6 rounded-lg hover:border-accent/50 transition-colors">
+                    <h4 class="font-mono text-sm text-textMain font-semibold mb-4">
+                        <span class="text-accent">&gt;</span> Tools & Deployment
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-textMuted font-mono">
+                        <li>● Git / GitHub</li>
+                        <li>● VS Code</li>
+                        <li>● cPanel / Web Hosting</li>
+                        <li>● Figma</li>
+                        <li>● Postman</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             PROJECTS
+        ========================= -->
+        <section id="projects" class="scroll-mt-24 py-20 reveal-3d">
+            <p class="font-mono text-xs text-accent uppercase tracking-wider mb-2">03. Work & Solutions</p>
+            <h3 class="text-2xl font-bold text-textMain mb-2">Featured Client Projects</h3>
+            <p class="text-xs text-textMuted font-mono mb-8">// Real-world applications built for performance, security, and scalability</p>
+
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Project 1: Healthcare -->
+                <div class="project-card bg-bgCard border border-bgBorder p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-accent">01 / HEALTHCARE PLATFORM</span>
+                            <a href="https://medlab.infy.click/?i=1" target="_blank" class="text-xs text-textMuted hover:text-accent">Live Demo →</a>
+                        </div>
+                        <h4 class="text-xl font-bold text-textMain mb-2">LifeFlow — Blood Donation Portal</h4>
+                        <p class="text-textMuted text-xs leading-relaxed">
+                            A comprehensive healthcare management system designed to connect blood donors directly with patients. Features real-time blood stock availability, emergency requests, donor registration, and admin dashboards.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-6 font-mono text-[10px]">
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">HTML5 / CSS3</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Tailwind CSS</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Bootstrap</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">JavaScript</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">PHP</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">MySQL</span>
+                    </div>
+                </div>
+
+                <!-- Project 2: Restaurant -->
+                <div class="project-card bg-bgCard border border-bgBorder p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-accent">02 / RESTAURANT & HOSPITALITY</span>
+                            <a href="https://hotelpanthi.unaux.com" target="_blank" class="text-xs text-textMuted hover:text-accent">Live Demo →</a>
+                        </div>
+                        <h4 class="text-xl font-bold text-textMain mb-2">Hotel Panthi — Dining & Ordering Portal</h4>
+                        <p class="text-textMuted text-xs leading-relaxed">
+                            A complete digital experience for modern dining, featuring interactive digital menus, online table reservations, instant food ordering, customer reviews, and an integrated management dashboard for staff.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-6 font-mono text-[10px]">
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">HTML5 / CSS3</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Tailwind CSS</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Bootstrap</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">JavaScript</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">PHP</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">MySQL</span>
+                    </div>
+                </div>
+
+                <!-- Project 3: Retail POS -->
+                <div class="project-card bg-bgCard border border-bgBorder p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-accent">03 / RETAIL & POS</span>
+                            <a href="https://mygeneralstore.freedev.app/" target="_blank" class="text-xs text-textMuted hover:text-accent">Live Demo →</a>
+                        </div>
+                        <h4 class="text-xl font-bold text-textMain mb-2">StoreEase — Smart POS & Inventory Management</h4>
+                        <p class="text-textMuted text-xs leading-relaxed">
+                            A comprehensive point-of-sale and retail management system designed for general stores. Features fast barcode billing, automated stock tracking, low-inventory alerts, sales analytics, and multi-user role management.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-6 font-mono text-[10px]">
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">HTML5 / CSS3</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Tailwind CSS</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">JavaScript</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">PHP</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">MySQL</span>
+                    </div>
+                </div>
+
+                <!-- Project 4: Job Portal -->
+                <div class="project-card bg-bgCard border border-bgBorder p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-accent">04 / CAREER PLATFORM</span>
+                            <a href="https://job-portal-dusky-five-79.vercel.app/" target="_blank" class="text-xs text-textMuted hover:text-accent">Live Demo →</a>
+                        </div>
+                        <h4 class="text-xl font-bold text-textMain mb-2">JobPortal — Enterprise Job Portal</h4>
+                        <p class="text-textMuted text-xs leading-relaxed">
+                            A full-featured recruitment platform connecting job seekers with hiring companies. Includes applicant profiles, job posting, tracking, resume applications and filtering.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-6 font-mono text-[10px]">
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">HTML5 / CSS3</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">Bootstrap</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-bgBorder">JavaScript</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">Python Flask</span>
+                        <span class="px-2 py-1 bg-bgMain rounded border border-accent/30 text-accent">MySQL</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =========================
+             PROCESS
+        ========================= -->
+        <section id="roadmap" class="scroll-mt-24 py-20 reveal-3d">
+            <p class="font-mono text-xs text-accent uppercase tracking-wider mb-2">04. Process & Quality</p>
+            <h3 class="text-2xl font-bold text-textMain mb-6">How We Deliver Results</h3>
+
+            <div class="bg-bgCard border border-bgBorder p-6 rounded-xl space-y-6">
+                <div>
+                    <div class="flex items-center justify-between text-sm font-mono mb-2">
+                        <span class="text-textMain font-bold">1. Strategic Planning & Architecture</span>
+                        <span class="text-accent">[ Step 01 ]</span>
+                    </div>
+                    <p class="text-textMuted text-xs leading-relaxed">
+                        We analyze your business requirements, define target audience goals, and choose the most effective technology stack for fast and scalable performance.
+                    </p>
+                </div>
+
+                <hr class="border-bgBorder">
+
+                <div>
+                    <div class="flex items-center justify-between text-sm font-mono mb-2">
+                        <span class="text-textMain font-bold">2. High-Speed & Mobile-First Development</span>
+                        <span class="text-accent">[ Step 02 ]</span>
+                    </div>
+                    <p class="text-textMuted text-xs leading-relaxed">
+                        Building clean-coded interfaces that look great across mobile, tablet and desktop screens.
+                    </p>
+                </div>
+
+                <hr class="border-bgBorder">
+
+                <div>
+                    <div class="flex items-center justify-between text-sm font-mono mb-2">
+                        <span class="text-textMain font-bold">3. Database Security & System Testing</span>
+                        <span class="text-accent">[ Step 03 ]</span>
+                    </div>
+                    <p class="text-textMuted text-xs leading-relaxed">
+                        Rigorous testing of database queries, authentication and application functionality.
+                    </p>
+                </div>
+
+                <hr class="border-bgBorder">
+
+                <div>
+                    <div class="flex items-center justify-between text-sm font-mono mb-2">
+                        <span class="text-textMain font-bold">4. Deployment & Ongoing Maintenance</span>
+                        <span class="text-accent">[ Step 04 ]</span>
+                    </div>
+                    <p class="text-textMuted text-xs leading-relaxed">
+                        Seamless deployment with SEO setup and reliable technical support.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             CONTACT
+        ========================= -->
+        <section id="contact" class="scroll-mt-24 py-20 max-w-3xl mx-auto text-center reveal-3d">
+            <p class="font-mono text-xs text-accent uppercase tracking-wider">05. Let's Work Together</p>
+            <h3 class="text-3xl sm:text-4xl font-bold text-textMain mt-2">Have a Project in Mind?</h3>
+            <p class="text-textMuted text-sm sm:text-base leading-relaxed max-w-xl mx-auto mt-5">
+                Whether you need a new website from scratch, a complete redesign, or a custom web application, we are here to turn your ideas into reality.
+            </p>
+
+            <div class="pt-6 flex flex-wrap justify-center items-center gap-4">
+                <a href="mailto:your-email@example.com" class="btn-magnetic inline-flex items-center gap-2 px-7 py-3.5 rounded-md bg-accent text-bgMain font-bold text-sm">
+                    Start a Project →
+                </a>
+                <a href="https://wa.me/919157450848" target="_blank" class="btn-magnetic inline-flex items-center gap-2 px-6 py-3.5 rounded-md border border-accent/40 bg-accent/10 text-accent font-semibold text-sm">
+                    💬 Quick Chat on WhatsApp
+                </a>
+            </div>
+
+            <p class="font-mono text-xs text-textMuted pt-4">
+                ⚡ Guaranteed response within <span class="text-accent font-semibold">24 hours</span>.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+    <footer class="mt-32 border-t border-bgBorder bg-bgCard/30 pt-16 pb-8 font-mono text-xs">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            
+            <div class="space-y-4 md:col-span-1">
+               <a href="#" class="group inline-flex items-center gap-2 font-mono font-bold text-base text-textMain hover:text-accent transition-all tracking-tight bg-bgCard/60 border border-bgBorder px-3.5 py-1.5 rounded-xl hover:border-accent/40 shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                    </span>
+                    <span class="text-accent group-hover:-translate-x-0.5 transition-transform">&lt;</span>
+                    <span class="tracking-wider">MKCRAFT <span class="text-accent">&amp;</span> CODE</span>
+                    <span class="text-accent group-hover:translate-x-0.5 transition-transform">/&gt;</span>
+                </a>
+                <p class="text-textMuted text-xs leading-relaxed">
+                    Crafting custom, high-converting websites and modern web apps that scale your business.
+                </p>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-textMain font-bold uppercase tracking-wider">Navigation</p>
+                <ul class="space-y-2 text-textMuted">
+                    <li><a href="#about" class="hover:text-accent transition-colors">Vision</a></li>
+                    <li><a href="#skills" class="hover:text-accent transition-colors">Tech Stack</a></li>
+                    <li><a href="#projects" class="hover:text-accent transition-colors">Projects</a></li>
+                    <li><a href="#roadmap" class="hover:text-accent transition-colors">Process</a></li>
+                    <li><a href="#contact" class="hover:text-accent transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-textMain font-bold uppercase tracking-wider">Get In Touch</p>
+                <ul class="space-y-2 text-textMuted">
+                    <li>
+                        <a href="https://wa.me/919157450848" target="_blank" class="hover:text-accent transition-colors flex items-center gap-2">
+                            <span>💬</span> +91 9157450848
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:your-email@example.com" class="hover:text-accent transition-colors flex items-center gap-2">
+                            <span>✉️</span> Send an Email
+                        </a>
+                    </li>
+                    <li class="text-accent/80 pt-1">⚡ Available for New Projects</li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-textMain font-bold uppercase tracking-wider">Connect</p>
+                <div class="flex items-center gap-4 text-textMuted">
+                    <a href="https://github.com/dharaviyakeshav" aria-label="GitHub" class="hover:text-accent transition-colors p-2 bg-bgMain rounded-md border border-bgBorder hover:border-accent">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/keshav-dharaviya-3b6b04360/" aria-label="LinkedIn" class="hover:text-accent transition-colors p-2 bg-bgMain rounded-md border border-bgBorder hover:border-accent">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="hover:text-accent transition-colors p-2 bg-bgMain rounded-md border border-bgBorder hover:border-accent">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://wa.me/919157450848" target="_blank" aria-label="WhatsApp" class="hover:text-accent transition-colors p-2 bg-bgMain rounded-md border border-bgBorder hover:border-accent">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-6 border-t border-bgBorder/50 text-center text-textMuted/60">
+            <p>© 2026 Web Solutions. Built for high performance & clean architecture.</p>
+        </div>
+    </footer>
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
+        // Spotlight Glow
+        const spotlight = document.getElementById('spotlight');
+        if (spotlight) {
+            window.addEventListener('pointermove', (e) => {
+                spotlight.style.setProperty('--x', `${e.clientX}px`);
+                spotlight.style.setProperty('--y', `${e.clientY}px`);
+            });
+        }
+
+        // 3D Scroll Reveal Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-3d').forEach(el => revealObserver.observe(el));
+
+        // Magnetic Buttons
+        document.querySelectorAll('.btn-magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+    </script>
+</body>
+</html>
